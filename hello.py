@@ -1,5 +1,6 @@
-string1 = "Hello"
-string2 = "Michael"
+str_list = [ 'Message1', 'Message2', 'Message3' ]
+hash_table = {}
+for name in str_list:
+    hash_table[name] = False
 
-message = "{}, {}. Welcome!".format(string1, string2)
-print(message)
+print(hash_table)
