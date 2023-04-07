@@ -1,5 +1,5 @@
 import csv
-from hash_table_generator_functions import unique, StdCANHashTableEntry
+from hash_table_generator_functions import unique, StdCAN_HashTableEntry
 
 print('\nRunning the hash_table_generator.py script to compute an appropriate value\n\
 to be used in the receive hash function as well as the hash table for 11-bit CAN receives.\n\
@@ -33,7 +33,7 @@ print('\t\tComputing value for hash function...')
 
 MAX_HASH_FUNCTION_VALUE = int( max(input_msg_id_data) )     # Uncomment this line if you want to guarantee the smallest number that produces no collisions
 # MAX_HASH_FUNCTION_VALUE = 2 ** 11 - 1     # Uncomment this line if you want better odds that a power of two will be found
-print( '\t\t\tMaximum hash function value based on input list: {}'.format(MAX_HASH_FUNCTION_VALUE) )
+print(f'\t\t\tMaximum hash function value based on input list: {MAX_HASH_FUNCTION_VALUE}')
 
 # It would be really convenient if the hash function value was a power of two.
 # This is because instead of a division operation for the hash function, a simple
@@ -96,7 +96,7 @@ print( '\t\t\tHash function value found: {}'.format(hash_function_value) )
 
 #########################################################################
 # Create the hash table
-#   The hash table will be a list of StdCANHashTableEntry objects. I'm going
+#   The hash table will be a list of StdCAN_HashTableEntry objects. I'm going
 #   with that instead of a dictionary because I prefer having the defined
 #   structure.
 #   Also, note that the size of the hash table will be hash_function_value.
@@ -116,7 +116,7 @@ print('\t\tCreating hash table...')
 # Create a list of empty objects of size hash_function_value
 hash_table = []
 for i in range(hash_function_value):
-    hash_table.append( StdCANHashTableEntry(0, 0, 'NULL', 0) )
+    hash_table.append( StdCAN_HashTableEntry(0, 0, 'NULL', 0) )
 
 # Now for the relevant indices, fill them up with the respective data.
 # Remember, the way the hash table works is we take the message ID, perform
@@ -125,7 +125,7 @@ for i in range(hash_function_value):
 # we want (refer to this section's header comment ^).
 for message in input_csv_data:
     hash_table_idx = int(message['MessageID']) % hash_function_value
-    hash_table[hash_table_idx] = StdCANHashTableEntry( True, int(message['MessageID']), f"{message['MessageName']}_Callback", int(message['PackIndex']) )
+    hash_table[hash_table_idx] = StdCAN_HashTableEntry( True, int(message['MessageID']), f"{message['MessageName']}_Callback", int(message['PackIndex']) )
 
 # for entry in hash_table:
 #     print(entry)

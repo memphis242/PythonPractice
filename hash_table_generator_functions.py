@@ -12,8 +12,16 @@ def unique(input_list):
 
 
 @dataclass
-class StdCANHashTableEntry:
+class StdCAN_HashTableEntry:
     relevancy_val: bool
     intended_id: int
     cb: str
     pack_index: int
+
+
+@dataclass
+class StdCAN_MessageSignal:
+    signal_name: str
+    start_byte: int
+    start_bit: int
+    length: int     # in bits

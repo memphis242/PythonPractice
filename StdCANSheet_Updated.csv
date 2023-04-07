@@ -1,0 +1,5 @@
+Message / Signal,MessageName / SignalName,MessageID,Start Byte,Start Bit,Length in Bits
+M,Vitals_PackVoltageCurrent,128,,,
+S,Pack1_Voltage,,1,1,16
+S,Pack1_Current,,3,1,16
+S,Pack1_DCBusVoltage,,5,1,16

@@ -1,0 +1,3 @@
+CAN_11Bit_Pack1_Voltage,
+CAN_11Bit_Pack1_Current,
+CAN_11Bit_Pack1_DCBusVoltage,
