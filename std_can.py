@@ -97,7 +97,7 @@ class StdCAN_MessageSignal:
             can_var_name = f'CAN_11Bit_{self.signal_name}'
             c_statement_str += f'\tJD_WriteVarValueStatus( {can_var_name}, {signal_value_str}, DATA_GOODDATA );\n'
         
-        elif num_of_bytes > 2 and num_of_bytes < 4:
+        elif num_of_bytes > 2 and num_of_bytes <= 4:
             can_var_name_upper = f'CAN_11Bit_{self.signal_name}_Upper'
             can_var_name_lower = f'CAN_11Bit_{self.signal_name}_Lower'
             c_statement_str += f'\tJD_WriteVarValueStatus( {can_var_name_upper}, {signal_value_str_upper}, DATA_GOODDATA );\n'

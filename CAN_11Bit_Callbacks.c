@@ -29,6 +29,8 @@ void Status_BMSContactorState_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 
 void Status_BMSContactorState_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
+	JD_WriteVarValueStatus( CAN_11Bit_Example_Signal_Upper, ( (UInt16_T)item->data[3] ) | ( ( (UInt16_T)item->data[4] ) << 8 ) , DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Example_Signal_Lower, ( (UInt16_T)item->data[1] ) | ( ( (UInt16_T)item->data[2] ) << 8 ) , DATA_GOODDATA );
 }
 
 void StateOfEnergy_SOC_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
