@@ -78,7 +78,7 @@ for idx, row in enumerate(input_csv_data):
 ######################################################################################
 can_callbacks_hfile_str = ''
 can_callbacks_cfile_str = ''
-signal_value_str = ''
+can_vars_str = ''
 # Iterate through the messages obtained and figure out what to do with each signal in the message
 for msg_name in msg_name_list:
     # Header file just needs a single callback function declaration for each message
@@ -91,8 +91,6 @@ for msg_name in msg_name_list:
         if signal.signal_name == 'NA':
             continue
 
-        signal_value_str = ''   # Using a separate string variable to build this C statement to make it easier to bring back in to cfile_str
-        
         # Based on signal type, we use a specific C statement
         signal_type = signal.determine_signal_type()
 
@@ -100,13 +98,21 @@ for msg_name in msg_name_list:
         if signal_type == SignalType.BYTES_SIGNAL:
             can_callbacks_cfile_str += signal.string_for_bytes_signal()
 
-    
+        # Signal is less than a byte long and is contained
+        if signal_type == SignalType.BITS_SIGNAL_LESS_THAN_A_BYTE_CONTAINED:
+            can_callbacks_cfile_str += signal.string_for_contained_bits()
+
+        # Now the CAN_11Bit_Vars.h str
+        num_of_bytes = signal.length / StdCAN_MessageSignal.NUM_OF_BITS_PER_BYTE 
+        if num_of_bytes <= 2:
+            can_vars_str += f'CAN_11Bit_{signal.signal_name},\n'
+        
+        elif num_of_bytes <= 4:
+            can_vars_str += f'CAN_11Bit_{signal.signal_name}_Upper,\n'
+            can_vars_str += f'CAN_11Bit_{signal.signal_name}_Lower,\n'
+
+    # Function footer
     can_callbacks_cfile_str += '}\n\n'
-
-
-can_vars_str = ''
-for signal_name in signal_name_list:
-    can_vars_str += f'CAN_11Bit_{signal_name},\n'
 
 
 print('\n\nPrinting CAN_11Bit_Vars.h file string:\n')

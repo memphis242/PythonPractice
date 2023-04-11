@@ -26,6 +26,7 @@ class StdCAN_MessageSignal:
     # Class parameters shared by all instances of this class
     NUM_OF_BITS_PER_BYTE = 8
     NUM_OF_BYTES_PER_MESSAGE = 8
+    BIT_MASK_TABLE = { 1: '0x01', 2: '0x02', 3: '0x04', 4: '0x08', 5: '0x10', 6: '0x20', 7: '0x40', 8: '0x80' }
 
     # Constructor
     def __init__(self, signal_name: str, start_byte: int, start_bit: int, length: int):
@@ -68,31 +69,31 @@ class StdCAN_MessageSignal:
     # NOTE: It is assumed that the signal is placed in the message LSB first
     def string_for_bytes_signal(self) -> str:
         signal_value_str = ''
+        c_statement_str = ''
 
         # Obtain number of bytes of signal
-        num_of_bytes = int(self.length / 8)
+        num_of_bytes = int(self.length / self.NUM_OF_BITS_PER_BYTE)
 
         # Simplest case
         if num_of_bytes == 1:
-            signal_value_str += f'(UInt16_T)item->data[{self.start_byte - 1}]'
+            signal_value_str += f'(JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}]'
 
         # Need to use bitwise OR to get full signal from here on out
         elif num_of_bytes == 2:
-            signal_value_str += f'( (UInt16_T)item->data[{self.start_byte - 1}] ) | ( ( (UInt16_T)item->data[{self.start_byte}] ) << 8 )'
+            signal_value_str += f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] ) | ( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte}] ) << 8 )'
 
         elif num_of_bytes == 3:
-            signal_value_str_upper = f'(UInt16_T)item->data[{self.start_byte + 1}]'
-            signal_value_str_lower = f'( (UInt16_T)item->data[{self.start_byte - 1}] ) | ( ( (UInt16_T)item->data[{self.start_byte}] ) << 8 ) '
+            signal_value_str_upper = f'(JD_VARMNGR_OBJ)item->data[{self.start_byte + 1}]'
+            signal_value_str_lower = f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] ) | ( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte}] ) << 8 ) '
 
         elif num_of_bytes == 4:
-            signal_value_str_upper = f'( (UInt16_T)item->data[{self.start_byte + 1}] ) | ( ( (UInt16_T)item->data[{self.start_byte + 2}] ) << 8 ) '
-            signal_value_str_lower = f'( (UInt16_T)item->data[{self.start_byte - 1}] ) | ( ( (UInt16_T)item->data[{self.start_byte}] ) << 8 ) '
+            signal_value_str_upper = f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte + 1}] ) | ( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte + 2}] ) << 8 ) '
+            signal_value_str_lower = f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] ) | ( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte}] ) << 8 ) '
 
         else:
             print(f'Warning!\tSignal length of {self.length} bits not supported')
             signal_value_str += f'// Signal {self.signal_name} has a length of {self.length} that is not supported. Sorry.'
 
-        c_statement_str = ''
         if num_of_bytes <= 2:
             can_var_name = f'CAN_11Bit_{self.signal_name}'
             c_statement_str += f'\tJD_WriteVarValueStatus( {can_var_name}, {signal_value_str}, DATA_GOODDATA );\n'
@@ -105,6 +106,25 @@ class StdCAN_MessageSignal:
 
         return c_statement_str
 
+
+    # Return string that corresponds to the kind of C statement that would obtain
+    # the data for this signal.
+    def string_for_contained_bits(self) -> str:
+        signal_value_str = ''
+        c_statement_str = ''
+
+        # Case of single bit (boolean) signals
+        bit_mask = self.BIT_MASK_TABLE[self.start_bit]
+        if self.length == 1:
+            if self.start_bit == 1:
+                signal_value_str += f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] & {bit_mask} )'
+            else:
+                signal_value_str += f'( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] & {bit_mask} ) >> {self.start_bit - 1} )'
+            can_var_name = f'CAN_11Bit_{self.signal_name}'
+            c_statement_str = f'\tJD_WriteVarValueStatus( {can_var_name}, {signal_value_str}, DATA_GOODDATA );\n'
+
+        return c_statement_str
+        
 
 
 
