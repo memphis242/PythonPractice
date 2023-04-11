@@ -1,6 +1,6 @@
-str_list = [ 'Message1', 'Message2', 'Message3' ]
-hash_table = {}
-for name in str_list:
-    hash_table[name] = False
+import csv
 
-print(hash_table)
+with open('StdCANSheet_Updated.csv', 'r', newline='') as csvfile:
+    # This DictReader object below can then be iterated over like a list of dictionaries with the column headers as the keys
+    csv_reader = csv.DictReader(csvfile)
+    # csv_reader[0]

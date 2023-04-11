@@ -1,6 +1,7 @@
 
 import csv
-from hash_table_generator_functions import unique, StdCAN_HashTableEntry, StdCAN_MessageSignal
+from std_can import unique, \
+                    StdCAN_HashTableEntry, StdCAN_MessageSignal, SignalType
 
 # Print initial display message...
 
@@ -15,69 +16,90 @@ msg_name_list = []
 signal_name_list = []
 can_var_name_list = []
 msg_signal_dictionary = {}
-# Set up needed input data from csv file
+# Read in data from csv file into local object
 with open('StdCANSheet_Updated.csv', 'r', newline='') as csvfile:
     # This DictReader object below can then be iterated over like a list of dictionaries with the column headers as the keys
     csv_reader = csv.DictReader(csvfile)
     
-    first_signal_in_msg = True
-    # Iterate over the csv_reader object and read in each data dictionary item into the input_csv_data list
     for row in csv_reader:
         input_csv_data.append(row)
 
-        if row['Message / Signal'] == 'M':
-            msg_id_list.append(row['MessageID'])
-            msg_name_list.append(row['MessageName / SignalName'])
-            first_signal_in_msg = True
+# Get information from input data
+first_signal_in_msg = True
+for idx, row in enumerate(input_csv_data):
 
-        else:
-            if first_signal_in_msg == True:
-                msg_signal_dictionary[msg_name_list[-1]] = []
-                first_signal_in_msg = False
-            signal_name_list.append( row['MessageName / SignalName'] )
-            can_var_name_list.append( f'CAN_11Bit_{ signal_name_list[-1] }' )
-            msg_signal_dictionary[msg_name_list[-1]].append( StdCAN_MessageSignal( row['MessageName / SignalName'], int(row['Start Byte']), int(row['Start Bit']), int(row['Length in Bits']) ) )
+    if row['Message / Signal'] == 'M':
+
+        msg_id_list.append(row['MessageID'])
+        msg_name_list.append(row['MessageName / SignalName'])
+        first_signal_in_msg = True
+
+        # Check if next row is also a message row, in which case
+        # append empty signal to this signal
+        if input_csv_data[idx + 1]['Message / Signal'] == 'M':
+            msg_signal_dictionary[msg_name_list[-1]] = [ StdCAN_MessageSignal('NA', 0, 0, 0) ]
+
+    else:
+        if first_signal_in_msg == True:
+            # If this is the first signal in the message, need to create a new list to set to this location in the dictionary
+            msg_signal_dictionary[msg_name_list[-1]] = []
+            first_signal_in_msg = False
+        signal_name_list.append( row['MessageName / SignalName'] )
+        can_var_name_list.append( f'CAN_11Bit_{ signal_name_list[-1] }' )
+        msg_signal_dictionary[msg_name_list[-1]].append( StdCAN_MessageSignal( row['MessageName / SignalName'], int(row['Start Byte']), int(row['Start Bit']), int(row['Length in Bits']) ) )
  
 
-print(input_csv_data)
-print()
-print()
-print(msg_id_list)
-print()
-print()
-print(msg_name_list)
-print()
-print()
-print(msg_signal_dictionary)
-print()
-print()
+# print(input_csv_data)
+# print()
+# print()
+# print(msg_id_list)
+# print()
+# print()
+# print(msg_name_list)
+# print()
+# print()
+# print(msg_signal_dictionary)
+# print()
+# print()
 
 
-for msg_name in msg_name_list:
-    print( f'Message: {msg_name}')
-    for signal in msg_signal_dictionary[msg_name]:
-        print(f'Signal Name: {signal.signal_name}, Start Byte: {signal.start_byte}, Start Bit: {signal.start_bit}, Length: {signal.length}')
+# for msg_name in msg_name_list:
+#     print( f'Message: {msg_name}')
+#     for signal in msg_signal_dictionary[msg_name]:
+#         print(f'Signal Name: {signal.signal_name}, Start Byte: {signal.start_byte}, Start Bit: {signal.start_bit}, Length: {signal.length}')
 
 
 
+######################################################################################
+# Figure out the C callback code needed for each type of signal
+#   - For the header file, there's a callback function for each message and that's it.
+#   - For the source file, there's a needed C statement for each type of signal with
+#     respect to the it's byte/bit placement and length
+######################################################################################
 can_callbacks_hfile_str = ''
 can_callbacks_cfile_str = ''
 signal_value_str = ''
+# Iterate through the messages obtained and figure out what to do with each signal in the message
 for msg_name in msg_name_list:
+    # Header file just needs a single callback function declaration for each message
     can_callbacks_hfile_str += f'void {msg_name}_Callback(struct Std_CAN_Queue_Item_S * item);\n\n'
 
+    # Source file needs the function header
     can_callbacks_cfile_str += f'void {msg_name}_Callback(struct Std_CAN_Queue_Item_S * item)\n' + '{\n'
+    # Then for each signal in the message, we have a C statement to extract it from the data bytes
     for signal in msg_signal_dictionary[msg_name]:
-        signal_value_str = ''
-        if signal.length % 8 == 0:
-            num_of_bytes = signal.length / 8
-            if num_of_bytes == 1:
-                signal_value_str += f'(UInt16_T)item->data[{signal.start_byte - 1}]'
-            elif num_of_bytes == 2:
-                signal_value_str += f'( ( (UInt16_T)item->data[{signal.start_byte}] ) << 8 ) | ( (UInt16_T)item->data[{signal.start_byte - 1}] )'
+        if signal.signal_name == 'NA':
+            continue
 
-        can_var_name = f'CAN_11Bit_{signal.signal_name}, '
-        can_callbacks_cfile_str += f'\tJD_WriteVarValueStatus( {can_var_name}, {signal_value_str}, DATA_GOODDATA );\n'
+        signal_value_str = ''   # Using a separate string variable to build this C statement to make it easier to bring back in to cfile_str
+        
+        # Based on signal type, we use a specific C statement
+        signal_type = signal.determine_signal_type()
+
+        # Signal is an integer number of bytes long
+        if signal_type == SignalType.BYTES_SIGNAL:
+            can_callbacks_cfile_str += signal.string_for_bytes_signal()
+
     
     can_callbacks_cfile_str += '}\n\n'
 

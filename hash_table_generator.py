@@ -1,5 +1,5 @@
 import csv
-from hash_table_generator_functions import unique, StdCAN_HashTableEntry
+from std_can import unique, StdCAN_HashTableEntry
 
 print('\nRunning the hash_table_generator.py script to compute an appropriate value\n\
 to be used in the receive hash function as well as the hash table for 11-bit CAN receives.\n\
