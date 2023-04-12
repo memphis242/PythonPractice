@@ -2,8 +2,17 @@
 import csv
 from std_can import unique, \
                     StdCAN_HashTableEntry, StdCAN_MessageSignal, SignalType
+import pandas as pd
 
 # Print initial display message...
+
+
+#########################################################################
+# Convert .xlsx Sheet into .csv File
+#########################################################################
+xlsx_file = pd.read_excel('StdCANSheet_Updated.xlsx')
+xlsx_file.to_csv('StdCANSheet_Updated.csv', index=None, header=True)
+
 
 #########################################################################
 # Read in CSV data
@@ -46,7 +55,7 @@ for idx, row in enumerate(input_csv_data):
             first_signal_in_msg = False
         signal_name_list.append( row['MessageName / SignalName'] )
         can_var_name_list.append( f'CAN_11Bit_{ signal_name_list[-1] }' )
-        msg_signal_dictionary[msg_name_list[-1]].append( StdCAN_MessageSignal( row['MessageName / SignalName'], int(row['Start Byte']), int(row['Start Bit']), int(row['Length in Bits']) ) )
+        msg_signal_dictionary[msg_name_list[-1]].append( StdCAN_MessageSignal( row['MessageName / SignalName'], int(float(row['Start Byte'])), int(float(row['Start Bit'])), int(float(row['Length in Bits'])) ) )
  
 
 # print(input_csv_data)
@@ -118,19 +127,19 @@ for msg_name in msg_name_list:
     can_callbacks_cfile_str += '}\n\n'
 
 
-print('\n\nPrinting CAN_11Bit_Vars.h file string:\n')
-print(can_vars_str)
+# print('\n\nPrinting CAN_11Bit_Vars.h file string:\n')
+# print(can_vars_str)
 with open('CAN_11Bit_Vars.h', 'w') as car_vars_file :
     car_vars_file.write(can_vars_str)
 
 
-print('\n\nPrinting CAN_11Bit_Callbacks.h file string:\n')
-print(can_callbacks_hfile_str)
+# print('\n\nPrinting CAN_11Bit_Callbacks.h file string:\n')
+# print(can_callbacks_hfile_str)
 with open('CAN_11Bit_Callbacks.h', 'w') as can_callbacks_hfile :
     can_callbacks_hfile.write(can_callbacks_hfile_str)
 
 
-print('\n\nPrinting CAN_11Bit_Callbacks.c file string:\n')
-print(can_callbacks_cfile_str)
+# print('\n\nPrinting CAN_11Bit_Callbacks.c file string:\n')
+# print(can_callbacks_cfile_str)
 with open('CAN_11Bit_Callbacks.c', 'w') as can_callbacks_cfile :
     can_callbacks_cfile.write(can_callbacks_cfile_str)
