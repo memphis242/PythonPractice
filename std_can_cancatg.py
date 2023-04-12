@@ -102,6 +102,9 @@ for msg_name in msg_name_list:
         if signal_type == SignalType.BITS_SIGNAL_LESS_THAN_A_BYTE_CONTAINED:
             can_callbacks_cfile_str += signal.string_for_contained_bits()
 
+        if signal_type == SignalType.BITS_SIGNAL_MORE_THAN_A_BYTE:
+            can_callbacks_cfile_str += signal.string_for_bits_signal_multibyte()
+
         # Now the CAN_11Bit_Vars.h str
         num_of_bytes = signal.length / StdCAN_MessageSignal.NUM_OF_BITS_PER_BYTE 
         if num_of_bytes <= 2:

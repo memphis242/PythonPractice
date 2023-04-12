@@ -1,8 +1,6 @@
 CAN_11Bit_Pack1_Voltage,
 CAN_11Bit_Pack1_Current,
 CAN_11Bit_Pack1_DCBusVoltage,
-CAN_11Bit_KeyState,
-CAN_11Bit_PowerState,
 CAN_11Bit_Pack2_Voltage,
 CAN_11Bit_Pack2_Current,
 CAN_11Bit_Pack2_DCBusVoltage,
