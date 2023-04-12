@@ -26,7 +26,11 @@ class StdCAN_MessageSignal:
     # Class parameters shared by all instances of this class
     NUM_OF_BITS_PER_BYTE = 8
     NUM_OF_BYTES_PER_MESSAGE = 8
-    BIT_MASK_TABLE = { 1: '0x01', 2: '0x02', 3: '0x04', 4: '0x08', 5: '0x10', 6: '0x20', 7: '0x40', 8: '0x80' }
+    SINGLE_BIT_MASK_TABLE =     { 1: '0x01', 2: '0x02', 3: '0x04', 4: '0x08', 5: '0x10', 6: '0x20', 7: '0x40', 8: '0x80' }
+    TWO_BIT_MASK_TABLE =        { 1: '0x03', 2: '0x06', 3: '0x0C', 4: '0x18', 5: '0x30', 6: '0x60', 7: '0xC0' }
+    THREE_BIT_MASK_TABLE =      { 1: '0x07', 2: '0x0E', 3: '0x1C', 4: '0x38', 5: '0x70', 6: '0xE0' }
+    FOUR_BIT_MASK_TABLE =       { 1: '0x0F', 2: '0x1E', 3: '0x3C', 4: '0x78', 5: '0xF0' }
+    BIT_MASK_DICTIONARY = { 1: SINGLE_BIT_MASK_TABLE, 2: TWO_BIT_MASK_TABLE, 3: THREE_BIT_MASK_TABLE, 4: FOUR_BIT_MASK_TABLE }
 
     # Constructor
     def __init__(self, signal_name: str, start_byte: int, start_bit: int, length: int):
@@ -91,8 +95,8 @@ class StdCAN_MessageSignal:
             signal_value_str_lower = f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] ) | ( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte}] ) << 8 ) '
 
         else:
-            print(f'Warning!\tSignal length of {self.length} bits not supported')
-            signal_value_str += f'// Signal {self.signal_name} has a length of {self.length} that is not supported. Sorry.'
+            print(f'WARNING: Signal length of {self.length} bits not supported')
+            signal_value_str += f'// Signal {self.signal_name} has a length of {self.length} that is not supported. Sorry.\n'
 
         if num_of_bytes <= 2:
             can_var_name = f'CAN_11Bit_{self.signal_name}'
@@ -113,15 +117,31 @@ class StdCAN_MessageSignal:
         signal_value_str = ''
         c_statement_str = ''
 
-        # Case of single bit (boolean) signals
-        bit_mask = self.BIT_MASK_TABLE[self.start_bit]
-        if self.length == 1:
+        # Check for validity first
+        if self.length > 4:
+            print('WARNING: Byte-contained signals that are greater than 4 bits in length are currently not supported!')
+            c_statement_str = '// WARNING: Byte-contained signals that are greater than 4 bits in length are currently not supported!\n'
+            
+        else:
+            bit_mask = self.BIT_MASK_DICTIONARY[self.length][self.start_bit]
+            # If start bit is the LSb, no need for shifting
             if self.start_bit == 1:
                 signal_value_str += f'( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] & {bit_mask} )'
+            # Otherwise, shifting is required
             else:
                 signal_value_str += f'( ( (JD_VARMNGR_OBJ)item->data[{self.start_byte - 1}] & {bit_mask} ) >> {self.start_bit - 1} )'
             can_var_name = f'CAN_11Bit_{self.signal_name}'
             c_statement_str = f'\tJD_WriteVarValueStatus( {can_var_name}, {signal_value_str}, DATA_GOODDATA );\n'
+
+        return c_statement_str
+
+
+    # Return string that corresponds to the kind of C statement that would obtain
+    # the data for this signal.
+    def string_for_spilling_bits(self) -> str:
+        signal_value_str = ''
+        c_statement_str = ''
+
 
         return c_statement_str
         

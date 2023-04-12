@@ -3,6 +3,8 @@ void Vitals_PackVoltageCurrent_Pack1_Callback(struct Std_CAN_Queue_Item_S * item
 	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Voltage, ( (JD_VARMNGR_OBJ)item->data[0] ) | ( ( (JD_VARMNGR_OBJ)item->data[1] ) << 8 ), DATA_GOODDATA );
 	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Current, ( (JD_VARMNGR_OBJ)item->data[2] ) | ( ( (JD_VARMNGR_OBJ)item->data[3] ) << 8 ), DATA_GOODDATA );
 	JD_WriteVarValueStatus( CAN_11Bit_Pack1_DCBusVoltage, ( (JD_VARMNGR_OBJ)item->data[4] ) | ( ( (JD_VARMNGR_OBJ)item->data[5] ) << 8 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_KeyState, ( (JD_VARMNGR_OBJ)item->data[6] & 0x03 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_PowerState, ( ( (JD_VARMNGR_OBJ)item->data[6] & 0x3C ) >> 2 ), DATA_GOODDATA );
 }
 
 void Vitals_PackVoltageCurrent_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
@@ -21,14 +23,17 @@ void Vitals_PackVoltageCurrent_Pack3_Callback(struct Std_CAN_Queue_Item_S * item
 
 void Status_BMSContactorState_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
 {
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void Status_BMSContactorState_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 {
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void Status_BMSContactorState_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void StateOfEnergy_SOC_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
