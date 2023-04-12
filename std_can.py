@@ -17,7 +17,6 @@ class StdCAN_HashTableEntry:
     relevancy_val: bool
     intended_id: int
     cb: str
-    pack_index: int
 
 
 class StdCAN_MessageSignal:
