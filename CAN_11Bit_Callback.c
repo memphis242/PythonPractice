@@ -21,32 +21,32 @@ void Vitals_PackVoltageCurrent_Pack3_Callback(struct Std_CAN_Queue_Item_S * item
 
 void Status_BMSContactorState_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_BMSState,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void Status_BMSContactorState_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_BMSState,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void Status_BMSContactorState_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_BMSState,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_BMSState, ( (JD_VARMNGR_OBJ)item->data[0] & 0x0F ), DATA_GOODDATA );
 }
 
 void StateOfEnergy_SOC_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_SOC,	 ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_SOC, ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
 }
 
 void StateOfEnergy_SOC_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_SOC,	 ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_SOC, ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
 }
 
 void StateOfEnergy_SOC_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_SOC,	 ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_SOC, ( ( (JD_VARMNGR_OBJ)item->data[1] & 0xFC ) >> 2 ) | ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x07 ) << 6 ), DATA_GOODDATA );
 }
 
 void PowerLimits_MaxChgDschgCurr_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
@@ -126,50 +126,50 @@ void StressEst_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 
 void IsolationStatus_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_IsolationActive_TF,	 ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_IsolationActive_TF, ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
 }
 
 void IsolationStatus_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_IsolationActive_TF,	 ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_IsolationActive_TF, ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
 }
 
 void IsolationStatus_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_IsolationActive_TF,	 ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_IsolationActive_TF, ( (JD_VARMNGR_OBJ)item->data[6] & 0x01 ), DATA_GOODDATA );
 }
 
 void Protections_BMSFaults_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_BatteryCAN_TF,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_Contactor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_CurrentSensor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_DCLinkOverVoltage_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_OvercurrentCharge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_OvercurrentDischarge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_BatteryCAN_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_BatteryCAN_TF, ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_Contactor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_CurrentSensor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_DCLinkOverVoltage_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_OvercurrentCharge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_OvercurrentDischarge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack1_Fault_BatteryCAN_TF, ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
 }
 
 void Protections_BMSFaults_Pack2_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_BatteryCAN_TF,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_Contactor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_CurrentSensor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_DCLinkOverVoltage_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_OvercurrentCharge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_OvercurrentDischarge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_BatteryCAN_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_BatteryCAN_TF, ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_Contactor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_CurrentSensor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_DCLinkOverVoltage_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_OvercurrentCharge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_OvercurrentDischarge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack2_Fault_BatteryCAN_TF, ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
 }
 
 void Protections_BMSFaults_Pack3_Callback(struct Std_CAN_Queue_Item_S * item)
 {
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_BatteryCAN_TF,	 ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_Contactor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_CurrentSensor_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_DCLinkOverVoltage_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_OvercurrentCharge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_OvercurrentDischarge_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
-	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_BatteryCAN_TF,	 ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_BatteryCAN_TF, ( (JD_VARMNGR_OBJ)item->data[0] & 0x01 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_Contactor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x02 ) >> 1 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_CurrentSensor_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x04 ) >> 2 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_DCLinkOverVoltage_TF, ( ( (JD_VARMNGR_OBJ)item->data[0] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_OvercurrentCharge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x08 ) >> 3 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_OvercurrentDischarge_TF, ( ( (JD_VARMNGR_OBJ)item->data[2] & 0x20 ) >> 5 ), DATA_GOODDATA );
+	JD_WriteVarValueStatus( CAN_11Bit_Pack3_Fault_BatteryCAN_TF, ( ( (JD_VARMNGR_OBJ)item->data[5] & 0x08 ) >> 3 ), DATA_GOODDATA );
 }
 
 void Protections_ModFaults_Pack1_Callback(struct Std_CAN_Queue_Item_S * item)

@@ -1,25 +1,33 @@
 
+# For working with the input sheets:
 import csv
+import pandas as pd
+# For my custom functions / class definition
 from std_can import unique, \
                     StdCAN_HashTableEntry, StdCAN_MessageSignal, SignalType
-import pandas as pd
 
 
 # Constants for the whole file
 CALLBACK_HEADER_FILE_NAME = 'CAN_11Bit_Callback.h'
 CALLBACK_SOURCE_FILE_NAME = 'CAN_11Bit_Callback.c'
 CAN_VARS_HEADER_FILE_NAME = 'CAN_11Bit_Vars.h'
-HASH_TABLE_VALUE_HEADER_FILE_NAME = 'StdCANHashValue.h'
-HASH_TABLE_SOURCE_FILE_NAME = 'StdCANHashTable.c'
+HASH_TABLE_VALUE_HEADER_FILE_NAME = 'CAN_11Bit_RxHashValue.h'
+HASH_TABLE_SOURCE_FILE_NAME = 'CAN_11Bit_RxHashTable.c'
 INPUT_EXCEL_FILE_NAME = 'StdCANSheet_Updated.xlsx'
 OUTPUT_CSV_FILE_NAME = INPUT_EXCEL_FILE_NAME.replace('xlsx', 'csv')
 
-# Print initial display message...
 
+
+# Print initial display message...
+print('\nRunning std_can_catg.py to generate 11-bit CAN app-vars, header/source files for callback functions, and Rx hash table/value files...\n')
 
 #########################################################################
 # Convert .xlsx Sheet into .csv File
+# NOTE: Unforuntately, one annoying thing about the pandas conversion of
+#       .xlsx into .csv is it seems to take numbers from the .xslx and
+#       print them as decimal-point numbers (floats) in the .csv.
 #########################################################################
+print('\t\tConverting .xlsx input file into .csv file...')
 xlsx_file = pd.read_excel(INPUT_EXCEL_FILE_NAME)
 xlsx_file.to_csv(OUTPUT_CSV_FILE_NAME, index=None, header=True)
 
@@ -30,7 +38,7 @@ xlsx_file.to_csv(OUTPUT_CSV_FILE_NAME, index=None, header=True)
 print('\t\tObtaining data from csv file...')
 
 input_csv_data = []     # This variable will hold the list of dictionaries, where each dictionary represents a row
-msg_id_list = []  # This list will hold the message IDs in the sheet, which turns out to be convenient later on
+msg_id_list = []        # This list will hold the message IDs in the sheet, which turns out to be convenient later on
 msg_name_list = []
 signal_name_list = []
 can_var_name_list = []
@@ -49,7 +57,7 @@ for idx, row in enumerate(input_csv_data):
 
     if row['Message / Signal'] == 'M':
 
-        msg_id_list.append(row['MessageID'])
+        msg_id_list.append(int(float(row['MessageID'])))
         msg_name_list.append(row['MessageName / SignalName'])
         first_signal_in_msg = True
 
@@ -64,17 +72,19 @@ for idx, row in enumerate(input_csv_data):
             msg_signal_dictionary[msg_name_list[-1]] = []
             first_signal_in_msg = False
         signal_name_list.append( row['MessageName / SignalName'] )
-        can_var_name_list.append( f'CAN_11Bit_{ signal_name_list[-1] }' )
+        can_var_name_list.append( f'CAN_11Bit_{ signal_name_list[-1] }' )   # The template for CAN app-vars will be "CAN_11Bit_<signal name>"
         msg_signal_dictionary[msg_name_list[-1]].append( StdCAN_MessageSignal( row['MessageName / SignalName'], int(float(row['Start Byte'])), int(float(row['Start Bit'])), int(float(row['Length in Bits'])) ) )
  
 
 
 ######################################################################################
-# Figure out the C callback code needed for each type of signal
+# Figure out the C callback code needed for each type of signal. It will be one callback
+# function per message, where a message may contain multiple signals.
 #   - For the header file, there's a callback function for each message and that's it.
 #   - For the source file, there's a needed C statement for each type of signal with
 #     respect to the it's byte/bit placement and length
 ######################################################################################
+print('\t\tFiguring out the callback function code for each of these messages...')
 can_callbacks_hfile_str = ''
 can_callbacks_cfile_str = ''
 can_vars_str = ''
@@ -125,9 +135,9 @@ for msg_name in msg_name_list:
 #   Find the smallest hash function value (so that we get a small hash table)
 #   that is hopefully also a power of two (so we don't have to divide).
 #########################################################################
-print('\t\tComputing value for hash function...')
+print('\t\tNow computing value for hash function...')
 
-MAX_HASH_FUNCTION_VALUE = int( float(max(msg_id_list)) )     # Uncomment this line if you want to guarantee the smallest number that produces no collisions
+MAX_HASH_FUNCTION_VALUE = int( max(msg_id_list) )     # Uncomment this line if you want to guarantee the smallest number that produces no collisions
 # MAX_HASH_FUNCTION_VALUE = 2 ** 11 - 1     # Uncomment this line if you want better odds that a power of two will be found
 print(f'\t\t\tMaximum hash function value based on input list: {MAX_HASH_FUNCTION_VALUE}')
 
@@ -159,7 +169,7 @@ while ( all_hash_values_are_unique == False or hash_function_value_is_power_of_t
     # Perform the hash function on each message ID to get a list of hash values produced
     # from this particular has function value
     for msg_id in msg_id_list:
-        hash_values_list.append( int(float(msg_id)) % hash_function_value )
+        hash_values_list.append( int(msg_id) % hash_function_value )
     
     # Determine if this hash function value produced resulted in no collisions...
     all_hash_values_are_unique = unique(hash_values_list)
@@ -224,8 +234,8 @@ for msg_id in msg_id_list:
     hash_table[hash_table_idx].intended_id = msg_id
     hash_table[hash_table_idx].relevancy_val = True
 
-for cb_name in callback_function_list:
-    hash_table_idx = int(msg_id) % hash_function_value
+for idx, cb_name in enumerate(callback_function_list):
+    hash_table_idx = int(msg_id_list[idx]) % hash_function_value
     hash_table[hash_table_idx].cb = cb_name
 
 
@@ -233,7 +243,7 @@ for cb_name in callback_function_list:
 #########################################################################
 # Make the file strings
 #########################################################################
-print('\t\tMaking the file strings...')
+print('\t\tNow making the rx hash table file strings...')
 
 ## First the hash function value header file
 hash_function_value_file_str = \
@@ -277,7 +287,7 @@ hash_table_file_str += 'const struct Relevancy_Table_Item RELEVANCY_HASH_TABLE[S
 # Fill 'er up!
 for idx, entry in enumerate(hash_table) :
     hash_table_file_str +=\
-        '\t{{\t{:1},\t\t{:4},\t\t{},\t\t{:2}\t}}'.format(str(entry.relevancy_val), str(entry.intended_id), str(entry.cb), str(entry.pack_index) )
+        '\t{{\t{:1},\t\t{:4},\t\t{}\t}}'.format(str(int(bool(entry.relevancy_val))), str(entry.intended_id), str(entry.cb) )
     if idx < hash_function_value :    # Only place commas after the items that are not the last item
         hash_table_file_str += ',\n'
 hash_table_file_str += '\n};'
@@ -316,17 +326,17 @@ hash_table_file_str += '\n};'
 #########################################################################
 print('\t\tFinally, writing to output files to be used in handcode...')
 
-with open('StdCANHashTable.c', 'w') as hash_table_file :
+with open(HASH_TABLE_SOURCE_FILE_NAME, 'w') as hash_table_file :
     hash_table_file.write(hash_table_file_str)
 
-with open('StdCANHashValue.h', 'w') as hash_function_value_file :
+with open(HASH_TABLE_VALUE_HEADER_FILE_NAME, 'w') as hash_function_value_file :
     hash_function_value_file.write(hash_function_value_file_str)
 
-with open('CAN_11Bit_Vars.h', 'w') as car_vars_file :
+with open(CAN_VARS_HEADER_FILE_NAME, 'w') as car_vars_file :
     car_vars_file.write(can_vars_str)
 
-with open('CAN_11Bit_Callbacks.h', 'w') as can_callbacks_hfile :
+with open(CALLBACK_HEADER_FILE_NAME, 'w') as can_callbacks_hfile :
     can_callbacks_hfile.write(can_callbacks_hfile_str)
 
-with open('CAN_11Bit_Callbacks.c', 'w') as can_callbacks_cfile :
+with open(CALLBACK_SOURCE_FILE_NAME, 'w') as can_callbacks_cfile :
     can_callbacks_cfile.write(can_callbacks_cfile_str)

@@ -3,11 +3,11 @@ M,Vitals_PackVoltageCurrent_Pack1,128.0,A,R,,,,,,
 S,Pack1_Voltage,,,,1.0,1.0,16.0,0.05,0.0,V
 S,Pack1_Current,,,,3.0,1.0,16.0,0.06,-2000.0,A
 S,Pack1_DCBusVoltage,,,,5.0,1.0,16.0,0.05,0.0,V
-M,Vitals_PackVoltageCurrent_Pack2,128.0,A,R,,,,,,
+M,Vitals_PackVoltageCurrent_Pack2,129.0,A,R,,,,,,
 S,Pack2_Voltage,,,,1.0,1.0,16.0,0.05,0.0,V
 S,Pack2_Current,,,,3.0,1.0,16.0,0.06,-2000.0,A
 S,Pack2_DCBusVoltage,,,,5.0,1.0,16.0,0.05,0.0,V
-M,Vitals_PackVoltageCurrent_Pack3,128.0,A,R,,,,,,
+M,Vitals_PackVoltageCurrent_Pack3,130.0,A,R,,,,,,
 S,Pack3_Voltage,,,,1.0,1.0,16.0,0.05,0.0,V
 S,Pack3_Current,,,,3.0,1.0,16.0,0.06,-2000.0,A
 S,Pack3_DCBusVoltage,,,,5.0,1.0,16.0,0.05,0.0,V
