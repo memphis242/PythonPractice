@@ -21,7 +21,7 @@ for argument in sys.argv[1:]:
 
 
 # Inform of input file...
-print(f'Input sheet is: {file_name}\n')
+print(f'Input file is: {file_name}\n')
 
 # Determine validity of file...
 if (file_name.find('.txt') == -1):
