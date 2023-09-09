@@ -1,0 +1,38 @@
+$ C:/Python311/python.exe c:/git/quickScripts/PythonPractice/GuessingRingSize/EstimateThroughRandomVariableMath.py
+
+Running EstimateThroughRandomVariableMath.py...
+
+THE GOAL: Get the best estimate I can of Hope's ring finger size.
+
+...So all I've got to go off of is a measurement of the diameter of Hope's Order of the Engineer
+...ring (using a rule with 1/64" markings), which is worn on a pinkie finger, super rough estimates using
+...the unroll-paper method of measuring my own pinkie and ring finger sizes. I am going to assume that   
+...the ruler measurement is normally distributed around my claimed measurement, +- half a marking, and   
+...the unroll paper method is uniformly distributed around the claimed measurement +- 3/32 inches.       
+...This script will
+......1) generate samples from the random distributions of aforementioned measurements,
+......2) generate samples for the ratio of the measurement distributions
+......3) use that ratio distribution to go from my ring finger measurement to Hope's
+......4) give me the probability that Hope's ring finger size is any one of the standard ring sizes      
+......5) give me a 75 percent confidence interval of Hope's ring finger size
+......6) pretty plots
+......7) output the utilized data in file(s)
+Number of Samples: 1000000
+
+Hope's Ring Size Mean of Estimate:              8.355057542770172
+Hope's Ring Size 75% Confidence Interval:       ( 7.320057542770172, 9.390057542770172 )
+...................................Range:       2.07
+
+Ring Size Probabilities:
+        Ring Size: 6    Probability: 0.0015999999999999999%
+        Ring Size: 6.5  Probability: 1.1665999999999999%
+        Ring Size: 7    Probability: 8.6012%
+        Ring Size: 7.5  Probability: 16.6315%
+        Ring Size: 8    Probability: 21.5062%
+        Ring Size: 8.5  Probability: 20.1171%
+        Ring Size: 9    Probability: 15.557699999999999%
+        Ring Size: 9.5  Probability: 9.9771%
+        Ring Size: 10   Probability: 5.0525%
+        Ring Size: 10.5 Probability: 1.3256999999999999%
+        Ring Size: 11   Probability: 0.0625%
+        Ring Size: 11.5 Probability: 0.00030000000000000003%
