@@ -73,6 +73,7 @@ A_ring_samples = np.random.uniform( A_ring_min, A_ring_max, NUM_OF_SAMPLES )
 # Perform Operations
 #########################################################################
 R_samples = np.divide( H_pinkie_ring_samples, A_pinkie_samples )
+print(f'\nMean of Ratio Samples: {np.mean(R_samples)}\n')
 H_ring_size_samples = np.multiply( R_samples, A_ring_samples )
 
 #########################################################################
