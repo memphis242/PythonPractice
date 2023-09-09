@@ -1,0 +1,61 @@
+// CanSniff Bus Monitor Program v6.14    Copyright (c) 1995-2022 Deere & Co. |
+//
+// >Cansniff -b=0 -b1=500 -Te -T=1CEF82FA:85 -F=..\CMU_2_0_1_Release_2_0_0_5__Statistics.txt 
+//
+// PreTrigger DateStamp: Thu Jul  6 07:52:28.000 AM 2023
+//
+// Screen Display: enabled
+// Idle sleep ms: -Ws=0
+// File Logging:  enabled, Logged Records: 6
+//  To                      ..\CMU_2_0_1_Release_2_0_0_5__Statistics.txt
+// Buffering   : disabled, Buffer Records: 0
+//  ToolTx: 01 xtd 1CEF82FA : 85
+//  ToolRx: 01 xtd 1CEFFA82 : 85
+// Trigger Loops          1,  Post Trigger          0
+// TX Ack Enable: 1, Error Frame Detection Enable: 1
+// HW Ack Enable: 1
+//
+r xtd 02 10F38903 08 02 FF 1E 5F E2 9A 01 00 0   0      0.000000      0.000000 2.._.... 
+r xtd 01 18FF1880 08 AA 2E 1D 35 78 13 50 35 0   0      0.000749      0.000749 ...5x.P5 JD Closed System pgn 9.  SPFH corner post status.
+r xtd 02 08EFA195 08 F4 18 00 7D FF FF 08 01 0   0      0.000882      0.000882 ...}.... JD Prop Msg
+r xtd 01 18FF1080 07 7F 02 07 04 AA 00 F8    0   0      0.001033      0.000284 .......  JD Closed System pgn 1.  Vehicle controls - CHS
+r xtd 01 0C000003 08 E9 80 26 FA 06 FA FF FF 0   0      0.001317      0.000284 ..&..... Torque Speed Control #1
+r xtd 01 18FF78F3 08 00 00 00 00 00 00 FF FF 0   0      0.002267      0.000950 ........ 
+r xtd 01 18FF1480 07 FF FF FF 99 7E 1C FF    0   0      0.002535      0.000268 ....~..  JD Closed System pgn 5.  SPFH Controller status message 1
+r xtd 01 0CFF2182 08 00 00 72 01 00 00 8C 0C 0   0      0.002823      0.000288 ..r..... JD Closed System pgn 18. SPFH controller cutterhead & machine operating time
+r xtd 02 08EFA295 08 FB 00 C8 C8 80 2B FF FF 0   0      0.002920      0.002038 .....+.. JD Prop Msg
+r xtd 01 18FF1180 07 07 06 39 04 AB 00 F8    0   0      0.003091      0.000268 ..9....  JD Closed System pgn 2.  SPFH  Armrest Status Message 2
+r xtd 01 10F38903 08 00 0F FF 01 F5 FF FF FF 0   0      0.003379      0.000288 Z....... JD Lighting Command - Left  Hand Worklights
+r xtd 01 18FF3482 08 00 00 00 01 F3 FF FF FF 0   0      0.003683      0.000304 ........ JD Lighting Command - Right Hand Worklights
+r xtd 01 18EFA082 08 00 00 00 00 7D 00 00 FF 0   0      0.003983      0.000300 ....}... JD Prop Msg
+r xtd 01 10F38903 08 01 00 FF FF 82 00 EF 00 0   0      0.004311      0.000328 ........ Acknowledgment - ACK - JD Prop Msg
+r xtd 01 18FD9D17 08 64 00 FF FF FF FF FF FF 0   0      0.004597      0.000286 d....... Sensor Electrical Power #1
+r xtd 01 10F38903 08 00 02 38 00 C0 80 FF F0 0   0      0.004883      0.000286 K.8..... JD Closed System pgn 4.  SPFH metal detect controller status
+r xtd 01 18FF1280 07 02 06 38 04 FF FF F8    0   0      0.005224      0.000341 ..8....  JD Closed System pgn 3.  SPFH control panel status.
+r xtd 01 10F38903 08 01 11 56 7E F0 7C FF FF 0   0      0.006325      0.001101 0.V~.|.. JD Closed System pgn 11. SPFH row guidance status.
+r xtd 02 08EFA295 08 F4 1B D0 84 FF FF 08 FF 0   0      0.007919      0.004999 ........ JD Prop Msg
+r xtd 01 10F38903 08 00 01 4A 1F 8C 1F FF FF 0   0      0.008250      0.001925 ..J..... JD Prop Msg
+r xtd 01 18FF1980 08 51 01 FE 05 54 01 A0 03 0   0      0.008534      0.000284 Q...T... JD Closed System pgn 10. SPFH Spout aiming control
+r xtd 01 10F38903 08 01 00 00 FF FF 00 00 FF 0   0      0.008820      0.000286 ........ Electronic Transmission Controller #1
+r xtd 01 18FFD4A0 08 22 E3 1F 10 28 10 01 02 0   0      0.009102      0.000282 "...(... 
+r xtd 01 10F38903 08 00 FF FF 7D 31 4E 31 4E 0   0      0.009378      0.000276 }..}1N1N Electronic Transmission Controller #2
+r xtd 02 10FFFEA1 08 79 FF 00 7D 00 7D C5 7C 0   0      0.009479      0.001560 y..}.}.| JD Inverter Status 1
+r xtd 02 10F38903 08 01 84 08 F8 2D 00 FF 00 0   0      0.009767      0.000288 w...-... JD Prop Msgs
+r xtd 02 10FFF4A1 08 32 FF 1E 5F E2 9A 01 00 0   0      0.010051      0.000284 2.._.... 
+r xtd 02 10F38903 08 00 FF CA 7F CF 84 F8 7C 0   0      0.010347      0.000296 y......| JD Inverter Status 1
+r xtd 02 10FFFEA2 08 77 82 08 F8 2D 00 FF 00 0   0      0.010640      0.000293 w...-... JD Prop Msgs
+r xtd 01 10F38903 08 01 FC FF FF FF 0F 70 09 0   0      0.010699      0.001321 9.....p. JD Closed System pgn 8.  SPFH controller status message 4
+r xtd 02 08EFA195 08 F4 18 00 7D FF FF 08 01 0   0      0.010924      0.000284 ...}.... JD Prop Msg
+r xtd 01 18FF1080 07 7F 02 07 04 AA 00 F8    0   0      0.010979      0.000280 .......  JD Closed System pgn 1.  Vehicle controls - CHS
+r xtd 02 10FFF4A2 08 32 FF 42 72 B8 87 01 14 0   0      0.011196      0.000272 2.Br.... 
+r xtd 01 18FF1880 08 AA 2E 1D 35 78 13 50 35 0   0      0.011267      0.000288 ...5x.P5 JD Closed System pgn 9.  SPFH corner post status.
+r xtd 01 18FF01F3 08 21 FF 2F FF 2F FF 2F FF 0   0      0.012299      0.001032 !./././. JD Proprietary Cylinder Diagnostics Functional Test Data Message
+r xtd 01 18FF1480 07 FF FF FF 99 7E 1C FF    0   0      0.012566      0.000267 ....~..  JD Closed System pgn 5.  SPFH Controller status message 1
+r xtd 01 10F38903 08 00 0B 38 02 A2 5E 12 83 0   0      0.012843      0.000277 /.8..^.. JD Closed System pgn 10. SPFH Spout aiming control
+r xtd 02 08EFA295 08 FB 00 C8 C8 80 2B FF FF 0   0      0.012922      0.001726 .....+.. JD Prop Msg
+r xtd 01 18FF1180 07 07 06 39 04 AB 00 F8    0   0      0.013110      0.000267 ..9....  JD Closed System pgn 2.  SPFH  Armrest Status Message 2
+r xtd 01 18FF3382 08 5A 0F FF 01 F5 FF FF FF 0   0      0.013398      0.000288 Z....... JD Lighting Command - Left  Hand Worklights
+r xtd 01 18FF3482 08 00 00 00 01 F3 FF FF FF 0   0      0.013699      0.000301 ........ JD Lighting Command - Right Hand Worklights
+r xtd 01 18EFA04E 08 10 10 01 B8 92 01 FF FF 0   0      0.013983      0.000284 ........ JD Prop Msg
+r xtd 01 18FFA082 08 FD FF FF FF FF FF FF FF 0   0      0.014279      0.000296 ........ 
+// Close log at Thu Jul  6 07:53:50.000 AM 2023
