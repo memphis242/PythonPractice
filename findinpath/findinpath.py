@@ -1,5 +1,13 @@
 import sys, os, fnmatch, re
 
+#!#############################################################################################################
+# \fn       find
+#
+# \brief    Function to look for a files within the path parameter that match the given regex pattern paramater.
+#
+# \note     This is a **non-recursive** search.
+# \return   List of filenames that match the pattern in the directory specified by path
+###############################################################################################################
 def find( pattern, path ):
    result = []
    regex_obj = re.compile(pattern)
