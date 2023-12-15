@@ -10,6 +10,8 @@ import math
 TEST_INPUT = 'C:\git\quickScripts\PythonPractice\include-path-insert\EIC_MessageGateway_UT.vcxproj'
 INCLUDE_PATH_TO_APPEND = '..\\..\\..\\node_modules\\@deere-embedded\\construction-backhoe.ett\\Stubs\\Core\\;'
 XML_ELEMENT_TO_FIND = '<AdditionalIncludeDirectories>'
+ELEMENT_TO_ADD = '\t\t<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>\n'
+ELEMENT_TO_FIND_BEFORE_ELEMENT_ADD = 'RootNamespace'
 
 #################### --FUNCTIONS-- #################### 
 
@@ -27,8 +29,18 @@ else:
 with open(file_to_search, 'r') as file_input:
    file_input_lines = file_input.readlines()
 
+ready_to_add = False
+add_completed = False
 with open(file_to_search, 'w') as replacement_file:
    for line in file_input_lines:
+      if ready_to_add == True:
+         ready_to_add = False
+         replacement_file.write(ELEMENT_TO_ADD)
+         add_completed = True
+      if add_completed == False and ELEMENT_TO_FIND_BEFORE_ELEMENT_ADD in line:
+         ready_to_add = True
+         continue
+
       if (XML_ELEMENT_TO_FIND in line) and (INCLUDE_PATH_TO_APPEND not in line):
          # Split the line's string on ';', then add at the index _prior_ to the last element the new include path
          split_line = line.split(';')
@@ -41,6 +53,8 @@ with open(file_to_search, 'w') as replacement_file:
          replacement_file.write(new_line)
       else:
          replacement_file.write(line)
+
+
 
 program_end_time = time.time()
 total_program_time = program_end_time - program_start_time
