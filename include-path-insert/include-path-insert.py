@@ -28,13 +28,13 @@ with open(file_to_search, 'r') as file_input:
    file_input_lines = file_input.readlines()
 
 with open(file_to_search, 'w') as replacement_file:
-   replacement_file.writelines()
    for line in file_input_lines:
       if XML_ELEMENT_TO_FIND in line:
          # Split the line's string on ';', then add at the index _prior_ to the last element the new include path
          split_line = line.split(';')
          split_line.insert(-1, INCLUDE_PATH_TO_APPEND)
          new_line = ''.join(split_line)
+         replacement_file.write(new_line)
       else:
          replacement_file.write(line)
 
