@@ -38,7 +38,11 @@ with open(file_to_search, 'w') as replacement_file:
          replacement_file.write(ELEMENT_TO_ADD)
          add_completed = True
       if add_completed == False and ELEMENT_TO_FIND_BEFORE_ELEMENT_ADD in line:
+         replacement_file.write(line)
          ready_to_add = True
+         continue
+
+      if ELEMENT_TO_ADD in line:
          continue
 
       if (XML_ELEMENT_TO_FIND in line) and (INCLUDE_PATH_TO_APPEND not in line):
