@@ -7,7 +7,7 @@ import math
 
 #################### --CONSTANTS-- #################### 
 # TODO: Update to be relative path and configure debugger's working directory to here so you can debug with file inputs...
-TEST_INPUT = 'include-path-append.py'
+TEST_INPUT = 'EIC_MessageGateway_UT.vcxproj'
 INCLUDE_PATH_TO_APPEND = '..\\..\\..\\node_modules\\@deere-embedded\\construction-backhoe.ett\\Stubs\\Core\\;'
 XML_ELEMENT_TO_FIND = '<AdditionalIncludeDirectories>'
 
@@ -24,7 +24,7 @@ if len(sys.argv) < 2:
 else:
    file_to_search = sys.argv[1]
 
-with open(file_to_search, 'w') as file_input:
+with open(file_to_search, 'r') as file_input:
    file_input_lines = file_input.readlines()
 
 with open(file_to_search, 'w') as replacement_file:
