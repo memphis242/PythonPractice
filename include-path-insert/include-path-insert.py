@@ -18,13 +18,15 @@ ELEMENT_TO_FIND_BEFORE_ELEMENT_ADD = 'RootNamespace'
 
 #################### ----MAIN----- #################### 
 
-program_start_time = time.time()
+# program_start_time = time.time()
 
 if len(sys.argv) < 2:
    file_to_search = TEST_INPUT
    # file_to_search = SUB_PUZZLE_INPUT
 else:
    file_to_search = sys.argv[1]
+
+print(f'Applying insertion to the file: {file_to_search}')
 
 with open(file_to_search, 'r') as file_input:
    file_input_lines = file_input.readlines()
@@ -60,8 +62,8 @@ with open(file_to_search, 'w') as replacement_file:
 
 
 
-program_end_time = time.time()
-total_program_time = program_end_time - program_start_time
-total_program_time_hh_mm_ss = str(timedelta( seconds=total_program_time ))
-hh_mm_ss = total_program_time_hh_mm_ss.split(':')
-print(f'\nTotal Program Execution Time: {hh_mm_ss[0]}h {hh_mm_ss[1]}m {hh_mm_ss[2]}s')
+# program_end_time = time.time()
+# total_program_time = program_end_time - program_start_time
+# total_program_time_hh_mm_ss = str(timedelta( seconds=total_program_time ))
+# hh_mm_ss = total_program_time_hh_mm_ss.split(':')
+# print(f'\nTotal Program Execution Time: {hh_mm_ss[0]}h {hh_mm_ss[1]}m {hh_mm_ss[2]}s')
