@@ -33,6 +33,8 @@ with open(file_to_search, 'w') as replacement_file:
          # Split the line's string on ';', then add at the index _prior_ to the last element the new include path
          split_line = line.split(';')
          for idx,item in enumerate(split_line):
+            if idx == len(split_line) - 1:
+               break
             split_line[idx] = item + ';'
          split_line.insert(-1, INCLUDE_PATH_TO_APPEND)
          new_line = ''.join(split_line)
