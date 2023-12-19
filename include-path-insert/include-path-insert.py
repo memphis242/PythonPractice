@@ -8,7 +8,7 @@ import math
 #################### --CONSTANTS-- #################### 
 # TODO: Update to be relative path and configure debugger's working directory to here so you can debug with file inputs...
 TEST_INPUT = 'C:\git\quickScripts\PythonPractice\include-path-insert\EIC_MessageGateway_UT.vcxproj'
-INCLUDE_PATH_TO_APPEND = '..\\..\\..\\node_modules\\@deere-embedded\\construction-backhoe.ett\\Stubs\\Core\\;'
+INCLUDE_PATH_TO_APPEND = '..\\..\\..\\node_modules\\@deere-embedded\\construction-backhoe.ett\\Stubs\\Core\\'
 XML_ELEMENT_TO_FIND = '<AdditionalIncludeDirectories>'
 ELEMENT_TO_ADD = '\t\t<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>\n'
 ELEMENT_TO_FIND_BEFORE_ELEMENT_ADD = 'RootNamespace'
@@ -50,12 +50,8 @@ with open(file_to_search, 'w') as replacement_file:
       if (XML_ELEMENT_TO_FIND in line) and (INCLUDE_PATH_TO_APPEND not in line):
          # Split the line's string on ';', then add at the index _prior_ to the last element the new include path
          split_line = line.split(';')
-         for idx,item in enumerate(split_line):
-            if idx == len(split_line) - 1:
-               break
-            split_line[idx] = item + ';'
          split_line.insert(-1, INCLUDE_PATH_TO_APPEND)
-         new_line = ''.join(split_line)
+         new_line = ';'.join(split_line)
          replacement_file.write(new_line)
       else:
          replacement_file.write(line)
