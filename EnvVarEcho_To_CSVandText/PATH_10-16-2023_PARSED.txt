@@ -61,4 +61,5 @@ C:\Users\C85HUP8\AppData\Local\GitHubDesktop\bin
 C:\Users\C85HUP8\.dotnet\tools
 C:\Program Files (x86)\TASKING\C166-VX v3.0r3\bin
 C:\Users\Public\AppData\Roaming\nvm
-C:\Program Files\nodejs
+C:\Program Files\nodejs 
+

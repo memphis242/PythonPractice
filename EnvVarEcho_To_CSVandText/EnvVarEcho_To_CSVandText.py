@@ -6,27 +6,17 @@ import sys
 #########################################################################
 # Obtain input file from command-line arguments
 #########################################################################
-for argument in sys.argv[1:]:
-    file_arg = argument.find('--file=')
+if len(sys.argv) < 2:
+    print('ERROR: No arguments supplied')
 
-    # If --file flag was found, extract the filename by removing the "--file" part of the flag.
-    if file_arg == 0:
-        file_name = argument.replace('--file=','')
+file_name = sys.argv[1]
 
-    elif file_arg == -1:
-        print('ERROR: No file specified')
-
-    else:
-        print('ERROR: Please specify the file using --file=<relative_file_path>.')
-
-
-# Inform of input file...
-print(f'Input file is: {file_name}\n')
-
-# Determine validity of file...
-if (file_name.find('.txt') == -1):
-    raise ValueError('Incorrect file type specified! Needs to be a .txt file.')
-
+#########################################################################
+# Obtain split character
+#########################################################################
+split_character = ';';
+if len(sys.argv) >= 3:
+   split_character = sys.argv[2];
 
 #########################################################################
 # Open the file, get the line of text, and split by the ';' character.
@@ -34,8 +24,8 @@ if (file_name.find('.txt') == -1):
 print('Parsing the file...\n')
 with open(file_name, 'r') as env_var_echo_file:
    input_line = env_var_echo_file.readlines()
-   input_line_stripped = input_line[0].strip()
-   parsed_paths = input_line_stripped.split(';')
+   input_line_stripped = input_line[0].strip(split_character)
+   parsed_paths = input_line_stripped.split(split_character)
 
 
 #########################################################################
